@@ -44,8 +44,7 @@ class Crawler_Google2(Crawler):
                 response = this.JSCrawl(url)
                 tree = html.fromstring(response.text)
 
-                # urls = tree.xpath('(//li)[@class="g"]//a[not(contains(@href, "translate"))]/text()')
-                urls = tree.xpath('(//div)[@class="g"]//h3[@class="r"]/a/@href')
+                urls = tree.xpath('//*/div[@class="r"]/a/@href')
 
                 split = 10
                 for url in urls:
