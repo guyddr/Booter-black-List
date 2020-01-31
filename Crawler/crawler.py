@@ -8,47 +8,47 @@ import datetime
 import json
 import random
 
-results_google 	   = []
+results_google = []
 results_hackforums = []
-results_youtube	   = []
+results_youtube = []
 
 try:
-	###############################################################################
-	## GOOGLE V2                                                                 ##
-	## ############################################################################
-	crawler = Crawler_Google2(1)
-	crawler.Crawl(100) # up to ~500 results (more is not possible by Google)
-	results_google = crawler.Finish('crawl_google2.txt')
+    ###############################################################################
+    ## GOOGLE V2                                                                 ##
+    ## ############################################################################
+    crawler = Crawler_Google2(1)
+    crawler.Crawl(100)  # up to ~500 results (more is not possible by Google)
+    results_google = crawler.Finish('crawl_google2.txt')
 
-	print()
-	print()
-	print()
+    print()
+    print()
+    print()
 
-	###############################################################################
-	## YOUTUBE                                                                   ##
-	## ############################################################################
-	crawler = Crawler_Youtube(1)
-	crawler.Crawl(100) # up to ~500 results (similar limit to Google)
-	results_youtube = crawler.Finish('crawl_youtube.txt')
+    ###############################################################################
+    ## YOUTUBE                                                                   ##
+    ## ############################################################################
+    crawler = Crawler_Youtube(1)
+    crawler.Crawl(100)  # up to ~500 results (similar limit to Google)
+    results_youtube = crawler.Finish('crawl_youtube.txt')
 
-	print()
-	print()
-	print()
+    print()
+    print()
+    print()
 
-	###############################################################################
-	## HACKFORUMS                                                                ##
-	###############################################################################
-	crawler = Crawler_Hackforums(1) # sleep level of 1
-	if crawler.Login():	# from time to time it might give a 5 sec check browser period; if so, simply manually solve this by visiting hackforums.net
-		print('login succesfull')
-		crawler.Crawl(datetime.datetime(2015, 3, 1)) # crawl up to may 15th
-		results_hackforums = crawler.Finish('crawl_hackforums.txt')
+    ###############################################################################
+    ## HACKFORUMS                                                                ##
+    ###############################################################################
+    crawler = Crawler_Hackforums(1)  # sleep level of 1
+    if crawler.Login():  # from time to time it might give a 5 sec check browser period; if so, simply manually solve this by visiting hackforums.net
+        print('login succesfull')
+        crawler.Crawl(datetime.datetime(2015, 3, 1))  # crawl up to may 15th
+        results_hackforums = crawler.Finish('crawl_hackforums.txt')
 
-	print()
-	print()
-	print()
+    print()
+    print()
+    print()
 except Exception as ex:
-	print('GLOBAL EXCEPTION: ' + str(ex))
+    print('GLOBAL EXCEPTION: ' + str(ex))
 
 ###############################################################################
 ## MERGE CRAWL RESULTS                                                       ##
@@ -77,10 +77,10 @@ except Exception as ex:
 # crawler.PrintDivider();
 # crawler.PrintUpdate('completed crawling procedures; saving output to \'crawler_output.txt\'')
 # with open('crawler_output.txt', 'w') as f:
-	# for booterURL in final_results:
-		# f.write(booterURL.UniqueName() + '\n')
-		# json.dump(vars(booterURL), f)
-		# f.write('\n')
+# for booterURL in final_results:
+# f.write(booterURL.UniqueName() + '\n')
+# json.dump(vars(booterURL), f)
+# f.write('\n')
 
 ###############################################################################
 ## SCRAPE AND GENERATE SCORES                                                ##
@@ -92,17 +92,17 @@ crawler.PrintDivider();
 # query all to-scrape URLs
 # from_date    = datetime.datetime(2015, 8, 1).strftime('%Y-%m-%d %H:%M:%S') # test_scores
 # from_date    = datetime.datetime(2015, 8, 19).strftime('%Y-%m-%d %H:%M:%S') #test_scores2
-from_date    = datetime.datetime(2015, 8, 20, 13, 30).strftime('%Y-%m-%d %H:%M:%S') #test_scores3
+from_date = datetime.datetime(2015, 8, 20, 13, 30).strftime('%Y-%m-%d %H:%M:%S')  # test_scores3
 delay_period = 7
-for url in crawler_api.storage.Select('SELECT fullURL FROM urls WHERE status != \'off\' AND timeUpdate >= \'' + str(from_date) + '\''):
-	delay = delay_period + random.randint(0,14) # add a slight randomness to delay_period as to divide workload
-	delay = 1
-	crawler.Scrape(BooterURL(url[0]), delay)
+for url in crawler_api.storage.Select(
+        'SELECT fullURL FROM urls WHERE status != \'off\' AND timeUpdate >= \'' + str(from_date) + '\''):
+    delay = delay_period + random.randint(0, 14)  # add a slight randomness to delay_period as to divide workload
+    delay = 1
+    crawler.Scrape(BooterURL(url[0]), delay)
 
 crawler.PrintDivider();
 crawler.PrintUpdate('DONE;')
 crawler.PrintDivider();
-
 
 # TESTING SCRAPE ALGORITHM
 # crawler.Scrape(BooterURL('http://joeydevries.com'))
