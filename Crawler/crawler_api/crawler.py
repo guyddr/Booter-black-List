@@ -8,9 +8,9 @@ from colorama import Fore, Back, Style
 from random import choice, random
 from time import sleep
 from urllib.parse import urlparse
-from crawler_api.booter_url import BooterURL
-from crawler_api.crawl_page import CrawlPage
-import crawler_api.storage
+from Crawler.crawler_api.booter_url import BooterURL
+from Crawler.crawler_api.crawl_page import CrawlPage
+import Crawler.crawler_api.storage
 
 
 # simple callback class for timer management
@@ -516,7 +516,7 @@ class Crawler:
 			else:
 				category_specific_dictionary_raw = 0.0
 			# calculate score: interpolate between 0.01 and 0.05 
-			category_specific_dictionary = max(1.0 - (category_specific_dictionary_raw - 0.01) / 0.04), 0.0)
+			category_specific_dictionary = max(1.0 - (category_specific_dictionary_raw - 0.01) / 0.04), 0.0
 			this.PrintUpdate('Category specific dictionary: ' + str(category_specific_dictionary_raw))
 
 			# - 3.4. Resolver indication (only the landing page); perhaps extend to all pages in future version?
@@ -581,7 +581,7 @@ class Crawler:
 			this.PrintUpdate('Login-form depth level: ' + str(login_form_depth_level_raw))
 
 			### 4. Now save the results into the database
-			crawler_api.storage.SaveScore('scores',
+			Crawler.crawler_api.storage.SaveScore('scores',
 				URL,
 				datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 				number_of_pages,
@@ -601,7 +601,7 @@ class Crawler:
 				login_form_depth_level
 			)
 			# also store raw feature data for analysis
-			crawler_api.storage.SaveScore('characteristics',
+			Crawler.crawler_api.storage.SaveScore('characteristics',
 				URL,
 				datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 				number_of_pages_raw,
