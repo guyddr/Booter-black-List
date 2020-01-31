@@ -10,3 +10,8 @@ Classifier/weight_adaptability/
 Classifier/__pycache__
 Crawler/__pycache__
 Crawler/crawler_api/__pycahce__
+venv/
+.idea/
+*.iml
+misc.xml
+modules.xml
