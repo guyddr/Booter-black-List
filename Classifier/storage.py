@@ -24,7 +24,7 @@ def UpdateWeights(last_update, nr_pages, url_type, average_depth_level, average_
 	outbound_hyperlinks, category_specific_dictionary, resolver_indication, terms_of_services_page,
 	login_form_depth_level):
 	table = 'weights'
-	url_unqiue = 'ALL'
+	url_unique = 'ALL'
 	# more efficient version (only 1 db request/push)
 	query  = 'UPDATE weights SET '
 	query += 'lastUpdate = \'' + str(last_update) + '\', '

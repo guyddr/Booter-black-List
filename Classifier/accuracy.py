@@ -1,5 +1,4 @@
-import datetime
-import storage
+import Classifier.storage
 
 # utility functionality for calculating several classification accuracy metrics
 # also includes printing functions
@@ -22,7 +21,7 @@ def CalculateAccuracy(thresholds):
 		query  = 'SELECT urls.domainName, urls.[booter?] FROM ' + table + ' '
 		query += 'INNER JOIN urls ON urls.domainName = ' + table + '.domainName '
 		query += 'WHERE urls.[booter?] != \'?\' AND urls.status = \'on\''
-		test_scores[table] = storage.Select(query)
+		test_scores[table] = Classifier.storage.Select(query)
 
 	# for each test_score dataset, calculate the accuracy metrics
 	test_results = {}
@@ -43,7 +42,7 @@ def CalculateAccuracy(thresholds):
 		for test_url in test_scores[test_table]:
 			url       = test_url[0]
 			is_booter = True if test_url[1] == 'Y' else False
-			scores    = storage.Select('SELECT * FROM ' + test_table_to_verification[test_table] + ' WHERE domainName = \'' + url + '\'')[0][2:] 
+			scores    = Classifier.storage.Select('SELECT * FROM ' + test_table_to_verification[test_table] + ' WHERE domainName = \'' + url + '\'')[0][2:]
 			for i in range(0, len(scores)):
 				metric    = metrics[i]
 				score     = scores[i]
@@ -143,7 +142,7 @@ def CalculateThresholds(increments, metric, score_table):
 	query  = 'SELECT urls.domainName, urls.[booter?] FROM ' + score_table + ' '
 	query += 'INNER JOIN urls ON urls.domainName = ' + score_table + '.domainName '
 	query += 'WHERE urls.[booter?] != \'?\' AND urls.status = \'on\''
-	test_urls = storage.Select(query) 
+	test_urls = Classifier.storage.Select(query)
 	results = {}
 	for i in range(0, increments + 1):
 		threshold = i / increments
@@ -156,7 +155,7 @@ def CalculateThresholds(increments, metric, score_table):
 		for test_url in test_urls:
 			url       = test_url[0]
 			is_booter = True if test_url[1] == 'Y' else False
-			score     = storage.Select('SELECT ' + metric + ' FROM ' + test_table_to_verification[score_table] + ' WHERE domainName = \'' + url + '\'')[0][0] 
+			score     = Classifier.storage.Select('SELECT ' + metric + ' FROM ' + test_table_to_verification[score_table] + ' WHERE domainName = \'' + url + '\'')[0][0]
 			if   score >= threshold and     is_booter:
 				true_positives.append(url)
 			elif score >= threshold and not is_booter:

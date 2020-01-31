@@ -1,6 +1,5 @@
-from verifier import Verifier
-import storage
-import math
+import Classifier.storage
+from Classifier.verifier import Verifier
 
 
 # classification sub-system focussed on the k-NN classification metric
@@ -17,13 +16,13 @@ class Verifier_KNN(Verifier):
 		query += 'WHERE urls.status = \'on\' '
 		this.scores_booter     = {}
 		weights = this.GetScaledWeightVector([])
-		for score_vector in storage.Select(query + ' AND urls.[booter?] = \'Y\''):
+		for score_vector in Classifier.storage.Select(query + ' AND urls.[booter?] = \'Y\''):
 			if use_weights:
 				this.scores_booter[score_vector[0]] = [a*b for a,b in zip(weights,list(score_vector[2:]))]
 			else:
 				this.scores_booter[score_vector[0]] = list(score_vector[2:])
 		this.scores_non_booter = {}
-		for score_vector in storage.Select(query + ' AND urls.[booter?] = \'N\''):
+		for score_vector in Classifier.storage.Select(query + ' AND urls.[booter?] = \'N\''):
 			if use_weights:
 				this.scores_non_booter[score_vector[0]] = [a*b for a,b in zip(weights,list(score_vector[2:]))]
 			else:

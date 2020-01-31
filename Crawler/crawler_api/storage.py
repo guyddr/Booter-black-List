@@ -1,9 +1,10 @@
 # storage.py hosts several utility database functions for storage
 # of Booter and crawl-related results. 
-from Crawler.crawler_api.booter_url import BooterURL
+import datetime
 # from booter_url import BooterURL # for when calling locally
 import sqlite3
-import datetime
+
+from Crawler.crawler_api.booter_url import BooterURL
 
 # open connection and retrieve (single) cursor
 # connection = sqlite3.connect('../BOOTERS.db') # for local call

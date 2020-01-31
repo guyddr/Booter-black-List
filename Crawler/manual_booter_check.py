@@ -1,14 +1,10 @@
 import datetime
-from lxml import etree
-from colorama import Fore, Back, Style
-from random import choice, random
-from time import sleep
-from urllib.parse import urlparse
-from Crawler.crawler_api.booter_url import BooterURL
-from Crawler.crawler_api.crawl_page import CrawlPage
-import Crawler.crawler_api.storage
-from selenium import webdriver
 import sys
+
+from selenium import webdriver
+
+import Crawler.crawler_api.storage
+from Crawler.crawler_api.booter_url import BooterURL
 
 
 # this is a simple script to manually traverse all PBDs found by the crawler

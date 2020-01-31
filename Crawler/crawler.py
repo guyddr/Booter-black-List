@@ -1,12 +1,11 @@
-from crawler_api.crawler_hackforums import Crawler_Hackforums
-from crawler_api.crawler_google2 import Crawler_Google2
-from crawler_api.crawler_youtube import Crawler_Youtube
-from crawler_api.booter_url import BooterURL
-from urllib.parse import urlparse
-import crawler_api.storage
 import datetime
-import json
 import random
+
+import Crawler.crawler_api.storage
+from Crawler.crawler_api.booter_url import BooterURL
+from Crawler.crawler_api.crawler_google2 import Crawler_Google2
+from Crawler.crawler_api.crawler_hackforums import Crawler_Hackforums
+from Crawler.crawler_api.crawler_youtube import Crawler_Youtube
 
 results_google = []
 results_hackforums = []
@@ -94,7 +93,7 @@ crawler.PrintDivider();
 # from_date    = datetime.datetime(2015, 8, 19).strftime('%Y-%m-%d %H:%M:%S') #test_scores2
 from_date = datetime.datetime(2015, 8, 20, 13, 30).strftime('%Y-%m-%d %H:%M:%S')  # test_scores3
 delay_period = 7
-for url in crawler_api.storage.Select(
+for url in Crawler.crawler_api.storage.Select(
         'SELECT fullURL FROM urls WHERE status != \'off\' AND timeUpdate >= \'' + str(from_date) + '\''):
     delay = delay_period + random.randint(0, 14)  # add a slight randomness to delay_period as to divide workload
     delay = 1

@@ -1,9 +1,9 @@
-import json
 import re
+
 from lxml import html
-from Crawler.crawler_api.crawler import Crawler
-from colorama import Fore, Back, Style
+
 from Crawler.crawler_api.booter_url import BooterURL
+from Crawler.crawler_api.crawler import Crawler
 
 
 # documentation: https://developers.google.com/web-search/docs/#The_Basics

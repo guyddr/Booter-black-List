@@ -1,8 +1,8 @@
 from lxml import html
-from colorama import Fore, Back, Style
+
+from Crawler.crawler_api.booter_url import BooterURL
 from Crawler.crawler_api.crawler import Crawler
 from Crawler.crawler_api.forum_item import ForumItem
-from Crawler.crawler_api.booter_url import BooterURL
 
 
 class Crawler_Hackforums(Crawler):

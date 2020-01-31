@@ -1,6 +1,5 @@
-from verifier import Verifier
-import storage
-import math
+from Classifier.verifier import Verifier
+
 
 # classification sub-system based on the Naive Bayes classification metric
 class Verifier_Bayes(Verifier):

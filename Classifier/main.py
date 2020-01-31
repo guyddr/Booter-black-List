@@ -1,9 +1,8 @@
-from verifier_distance import Verifier_Distance
-from verifier_naive_bayes import Verifier_Bayes
-from verifier_knn import Verifier_KNN
-import storage
-import accuracy
-
+import Classifier.accuracy
+import Classifier.storage
+from Classifier.verifier_distance import Verifier_Distance
+from Classifier.verifier_knn import Verifier_KNN
+from Classifier.verifier_naive_bayes import Verifier_Bayes
 
 ###########################################################
 ##    VERIFY                                             ##
@@ -22,7 +21,7 @@ for table in test_tables:
 	print('== ===========================')
 	print('TEST TABLE: ' + table)
 	print('== ===========================')
-	for url in storage.Select('SELECT domainName FROM ' + table):
+	for url in Classifier.storage.Select('SELECT domainName FROM ' + table):
 		print('VERIFYING URL: ' + url[0])
 		verDistance.Euclidean_Distance(table, test_table_to_verification[table], url[0])
 		verDistance.Squared_Euclidian_Distance(table, test_table_to_verification[table], url[0])
@@ -38,8 +37,8 @@ for table in test_tables:
 ###########################################################
 # thresholds = [0.41, 0.66, 0.62, 0.78, 0.82, 0.5, 0.5] # unweighted (euc, sq. euc, manhattan, cosine, fractional)
 thresholds = [0.71, 0.89, 0.75, 0.95, 0.86, 0.5, 0.5] # weighted  (euc, sq. euc, manhattan, cosine, fractional)
-results = accuracy.CalculateAccuracy(thresholds)
-accuracy.PrintResults(results, False, False)
+results = Classifier.accuracy.CalculateAccuracy(thresholds)
+Classifier.accuracy.PrintResults(results, False, False)
 
 
 # or calculate optimal threshold values for distance metrics

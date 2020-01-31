@@ -1,6 +1,6 @@
-from verifier import Verifier
-import storage
 import math
+
+from Classifier.verifier import Verifier
 
 
 # verification sub-class for Distance metrics:

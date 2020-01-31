@@ -1,16 +1,17 @@
-import requests
 import datetime
-import cfscrape
-import pythonwhois  # https://github.com/joepie91/python-whois
 import signal
-from lxml import etree
-from colorama import Fore, Back, Style
 from random import choice, random
 from time import sleep
-from urllib.parse import urlparse
+
+import cfscrape
+import pythonwhois  # https://github.com/joepie91/python-whois
+import requests
+from colorama import Fore, Style
+from lxml import etree
+
+import Crawler.crawler_api.storage
 from Crawler.crawler_api.booter_url import BooterURL
 from Crawler.crawler_api.crawl_page import CrawlPage
-import Crawler.crawler_api.storage
 
 
 # simple callback class for timer management
@@ -163,7 +164,7 @@ class Crawler:
                 status = this.GetStatus(URL.Full_URL)
                 URL = BooterURL(status[2])
                 # save in database
-                crawler_api.storage.SaveURL(URL, source, status[0])
+                Crawler.crawler_api.storage.SaveURL(URL, source, status[0])
                 # then save in list if proper response or post error
                 if status[1] == 200 or status[1] == 403 or status[1] == 202:
                     BooterURL.Status = status  # add status to URL for later use
@@ -225,8 +226,8 @@ class Crawler:
     # characteristics in 'The Generation of Booter (black)lists'
     def Scrape(this, URL, days_update=0):
         # check if number of days_update days have passed since last update, and if so, update
-        if crawler_api.storage.RowExists('scores', URL.UniqueName()):
-            last_update = crawler_api.storage.GetSingleValue('scores', URL.UniqueName(), 'lastUpdate')
+        if Crawler.crawler_api.storage.RowExists('scores', URL.UniqueName()):
+            last_update = Crawler.crawler_api.storage.GetSingleValue('scores', URL.UniqueName(), 'lastUpdate')
             last_update = datetime.datetime.strptime(last_update, '%Y-%m-%d %H:%M:%S')
             current_date = datetime.datetime.now()
             difference = (current_date - last_update).days

@@ -1,9 +1,10 @@
-from verifier_distance import Verifier_Distance
-import storage
-import accuracy
-import math
 import datetime
+import math
 import random
+
+import Classifier.accuracy
+import Classifier.storage
+from Classifier.verifier_distance import Verifier_Distance
 
 test_table_to_verification = {}
 test_table_to_verification['scores']  = 'verification'
@@ -20,13 +21,13 @@ def CheckAccuracy(new_weights):
 	# verDistance.weights = [16.7194209217615, 2.60829499230467,2.2260372998623,2.90305925398725,5.09533279100191,2.99409304662811,3.1147007335932,5.27110197918494,7.929635390837,3.5367525886694,6.76277542448109,1.62292767902453,0.707530369202495,0.492143303569623,0.644893274893918]
 
 	# first, re-calculate Cosine distance values with new weights (on training set)
-	for url in storage.Select('SELECT domainName FROM scores'):
+	for url in Classifier.storage.Select('SELECT domainName FROM scores'):
 		print('CA_1:VERIFYING URL: ' + url[0])
 		verDistance.Cosine_Distance('scores', test_table_to_verification['scores'], url[0])
 
 	# second, check Cosine distance accuracy on 100 thresholds and select best T
 	# (on scores database)
-	threshold_results = accuracy.CalculateThresholds(100, 'cosine', 'scores')
+	threshold_results = Classifier.accuracy.CalculateThresholds(100, 'cosine', 'scores')
 	# - find best result
 	best_t		 = 0.0
 	max_accuracy = 0.0
@@ -61,7 +62,7 @@ def CheckAccuracy(new_weights):
 
 	# - then use best threshold found to calculate accuracy of current metric
 	thresholds 		 = [0.0, 0.0, 0.0, best_t, 0.0, 0.0, 0.0] # we only care about Cosine threshold
-	accuracy_results = accuracy.CalculateAccuracy(thresholds)
+	accuracy_results = Classifier.accuracy.CalculateAccuracy(thresholds)
 	# - now get accuracy rate of cosine distance with new weights and threshold best_t
 	true_positives  = accuracy_results['cosine']['tp']
 	true_negatives  = accuracy_results['cosine']['tn']
@@ -90,7 +91,7 @@ iterations = 1
 while True:
 	iterations += 1
 	# 1, get current best set of weights and corresponding accuracy rate
-	row 		= storage.Select('SELECT * FROM weight_adaptability ORDER BY car DESC LIMIT 1')
+	row 		= Classifier.storage.Select('SELECT * FROM weight_adaptability ORDER BY car DESC LIMIT 1')
 	car 		= row[0][1] # best CAR stored in database
 	new_weights = list(row[0][4:])
 	# 2. update weights based on Guassian distribution curve
@@ -112,7 +113,7 @@ while True:
 	if error_rates[0] > car:
 		print('new set of weights found: ' + str(new_weights))
 	# 5. store and repeat
-	storage.Insert('weight_adaptability', 
+	Classifier.storage.Insert('weight_adaptability',
 		[datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 		error_rates[0],
 		error_rates[1],

@@ -1,16 +1,18 @@
-import storage
 import datetime
 import math
+
+import Classifier.storage
+
 
 class Verifier:
 	# accepts a vector (list) of weights
 	def __init__(this):
 		# get weight vector from database
-		weights 		   = storage.Select('SELECT * FROM weights')
+		weights 		   = Classifier.storage.Select('SELECT * FROM weights')
 		this.weights 	   = weights[0][2:] # do not include domainName and lastUpdate column
 
 	def UpdateScore(this, url, score):
-		storage.SaveScore(url, score)
+		Classifier.storage.SaveScore(url, score)
 
 	def IsBooter(this, score):
 		if score > this.threshold:
@@ -25,7 +27,7 @@ class Verifier:
 		return math.sqrt(length);
 
 	def GetScoreVector(this, table, url):
-		result = storage.Select('SELECT * FROM ' + table + ' WHERE domainName = \'' + url + '\'') 
+		result = Classifier.storage.Select('SELECT * FROM ' + table + ' WHERE domainName = \'' + url + '\'')
 		score_vector = []
 		for score in result[0][2:]:
 			score_vector.append(score)
@@ -71,4 +73,4 @@ class Verifier:
 		# return score_vector # uncomment this if you don't want to use weights
 
 	def SaveScore(this, table, url, name, score):
-		storage.SaveScore(table, url, datetime.datetime.now(), name, score)
+		Classifier.storage.SaveScore(table, url, datetime.datetime.now(), name, score)

@@ -1,7 +1,6 @@
-import requests
-import cfscrape
 import tldextract  # https://github.com/john-kurkowski/tldextract
 from lxml import html
+
 from Crawler.crawler_api.booter_url import BooterURL
 
 
